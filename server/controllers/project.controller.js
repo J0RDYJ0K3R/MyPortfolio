@@ -1,0 +1,1 @@
+module.exports=require("./resource.controller")(require("../models/Project"),["title","description","completionDate"],["title","description","completionDate","technologies","githubUrl","liveUrl","imageUrl"]);
