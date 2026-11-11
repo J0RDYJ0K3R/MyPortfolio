@@ -10,8 +10,9 @@ const c = require("../controllers/contact.controller");
 router.post("/", c.create);
 
 // Authenticated users can view contacts
-router.get("/", auth, c.list);
-router.get("/:id", auth, c.one);
+router.get("/", auth, admin, c.list);
+router.get("/:id", auth, admin, c.one);
+
 
 // Administrators only: update and delete contacts
 router.put("/:id", auth, admin, c.update);
