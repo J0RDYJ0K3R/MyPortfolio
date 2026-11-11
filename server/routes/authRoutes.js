@@ -26,4 +26,15 @@ router.post("/login",async(req,res)=>{
  }catch(e){res.status(500).json({message:"Login failed"});}
 });
 router.post("/logout",auth,(req,res)=>res.json({message:"Signed out. Delete the access token on the client. This endpoint does not revoke issued tokens; they expire within one hour."}));
+router.get("/me", auth, (req, res) => {
+  res.json({
+    id: req.user._id,
+    name: req.user.name,
+    username: req.user.username,
+    email: req.user.email,
+    role: req.user.role
+  });
+});
 module.exports=router;
+
+

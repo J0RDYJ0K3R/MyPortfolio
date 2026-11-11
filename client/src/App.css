@@ -182,3 +182,259 @@
     border-right-color: var(--border);
   }
 }
+
+/* ====================================
+   Assignment 3 - Authentication Pages
+   ==================================== */
+
+.auth-page {
+  max-width: 480px;
+  width: calc(100% - 32px);
+  margin: 60px auto;
+  padding: 35px;
+  background: rgba(22, 20, 45, 0.94);
+  border: 1px solid rgba(156, 112, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.auth-page h1 {
+  text-align: center;
+  margin-bottom: 28px;
+  color: #ffffff;
+}
+
+.auth-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-page form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.auth-page label {
+  color: #ded8f5;
+  font-weight: 500;
+}
+
+.auth-page input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #544875;
+  border-radius: 8px;
+  background: #111025;
+  color: #ffffff;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.auth-page input:focus {
+  outline: none;
+  border-color: #a477ff;
+  box-shadow: 0 0 0 3px rgba(164, 119, 255, 0.18);
+}
+
+.auth-page button {
+  padding: 13px;
+  background: linear-gradient(135deg, #8754e8, #ae82ff);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.auth-page button:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+.auth-page button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.auth-page > p {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.auth-page a {
+  color: #b99aff;
+  text-decoration: none;
+}
+
+.auth-page a:hover {
+  text-decoration: underline;
+}
+
+.auth-page [role="alert"] {
+  color: #ff9090;
+}
+
+.auth-page [role="status"] {
+  color: #9ee6b2;
+}
+
+@media (max-width: 540px) {
+  .auth-page {
+    margin: 25px auto;
+    padding: 24px 18px;
+  }
+}
+
+/* Assignment 3 - Navbar authentication */
+
+.nav-logout {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-logout:hover {
+  color: #b99aff;
+}
+
+.nav-logout:focus-visible {
+  outline: 2px solid #b99aff;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* Assignment 3 - Administrator Dashboard */
+
+.admin-dashboard {
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 20px;
+  color: #ffffff;
+}
+
+.admin-dashboard h1 {
+  margin-bottom: 12px;
+}
+
+.admin-dashboard > p {
+  margin-bottom: 30px;
+  color: #c9c2e5;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.admin-card {
+  background: rgba(22, 20, 45, 0.94);
+  border: 1px solid rgba(156, 112, 255, 0.3);
+  padding: 25px;
+  border-radius: 14px;
+}
+
+.admin-card h2 {
+  color: #b99aff;
+  margin-bottom: 12px;
+}
+
+.admin-card p {
+  color: #d4cee7;
+  line-height: 1.6;
+}
+
+/* Assignment 3 - Admin CRUD Forms */
+
+.admin-form-card {
+  background: rgba(22, 20, 45, 0.94);
+  border: 1px solid rgba(156, 112, 255, 0.3);
+  border-radius: 14px;
+  padding: 28px;
+  margin: 25px 0 40px;
+}
+
+.admin-form-card h2 {
+  color: #b99aff;
+  margin-bottom: 20px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-form label {
+  color: #ded8f5;
+  font-weight: 500;
+}
+
+.admin-form input,
+.admin-form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #544875;
+  background: #111025;
+  color: white;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus {
+  outline: 2px solid #a477ff;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.admin-actions button {
+  padding: 11px 20px;
+  background: #8754e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.admin-actions button:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.admin-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-actions .admin-delete {
+  background: #a32d45;
+}
+
+.admin-error {
+  color: #ff9999;
+  margin: 15px 0;
+}
+
+.admin-success {
+  color: #a5f0b5;
+  margin: 15px 0;
+}
+
+.admin-dashboard > h2 {
+  margin-bottom: 20px;
+  color: #ffffff;
+}
