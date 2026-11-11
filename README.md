@@ -1,4 +1,4 @@
-# MyPortfolio — Assignment 2
+# MyPortfolio — Assignment 3
 
 React/Vite client plus Node/Express/Mongoose backend, based on the class MERN skeleton.
 
