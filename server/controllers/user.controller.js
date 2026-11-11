@@ -2,7 +2,8 @@ const User=require("../models/User");
 const bcrypt=require("bcryptjs");
 const {validId,err,emailValid,permitted}=require("../helpers/validation");
 const publicUser=u=>({ _id:u._id,name:u.name,username:u.username,email:u.email,createdAt:u.createdAt,updatedAt:u.updatedAt });
-const own=(req,id)=>req.user.userId===id;
+const own = (req, id) =>
+  req.user._id.toString() === id;
 exports.list=async(req,res)=>{try{res.json((await User.find()).map(publicUser));}catch(e){res.status(500).json({message:"Failed to list users"});}};
 exports.one=async(req,res)=>{if(!validId(req.params.id))return err(res,"Invalid ID");if(!own(req,req.params.id))return err(res,"Forbidden",403);const u=await User.findById(req.params.id);if(!u)return err(res,"User not found",404);res.json(publicUser(u));};
 exports.create=async(req,res)=>{const {name,email,password,username}=req.body||{};if(!name?.trim()||!emailValid(email)||typeof password!=="string"||password.length<8)return err(res,"Name, valid email, and password (8+ characters) required");try{const u=await User.create({name:name.trim(),email:email.toLowerCase(),username,password:await bcrypt.hash(password,12)});res.status(201).json(publicUser(u));}catch(e){return err(res,e.code===11000?"User already exists":"Invalid user data",e.code===11000?409:400);}};

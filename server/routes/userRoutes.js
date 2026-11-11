@@ -1,10 +1,19 @@
-const router=require("express").Router();
-const auth=require("../middleware/authMiddleware");
-const c=require("../controllers/user.controller");
+
+const router = require("express").Router();
+
+const auth = require("../middleware/authMiddleware");
+const admin = require("../middleware/adminMiddleware");
+const c = require("../controllers/user.controller");
+
 router.use(auth);
-router.get("/",c.list);
-router.get("/:id",c.one);
-router.post("/",c.create);
-router.put("/:id",c.update);
-router.delete("/:id",c.remove);
-module.exports=router;
+
+// Administrators only
+router.get("/", admin, c.list);
+router.post("/", admin, c.create);
+
+// Users can manage only their own records
+router.get("/:id", c.one);
+router.put("/:id", c.update);
+router.delete("/:id", c.remove);
+
+module.exports = router;
