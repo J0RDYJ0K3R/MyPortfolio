@@ -5,3 +5,7 @@ client/dist/
 .env.*
 !.env.example
 *.log
+# Cypress generated evidence
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
