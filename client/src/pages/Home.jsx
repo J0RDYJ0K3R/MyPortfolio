@@ -11,7 +11,7 @@ function Home() {
           Hello, I'm <span>Benjamin Shlamovsky-Koroz</span>
         </h1>
 
-        <h2>Developer • Student • Problem Solver</h2>
+        <h2>Full-Stack Developer • AI Student • Problem Solver</h2>
 
         <p className="hero-description">
           Welcome to my personal portfolio. I am a software development
