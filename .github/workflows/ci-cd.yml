@@ -1,0 +1,115 @@
+
+name: Portfolio CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    name: Test and Build
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    env:
+      PORT: 5000
+      MONGO_URI: mongodb://127.0.0.1:27017/portfolio_ci
+      JWT_SECRET: ci-only-test-secret-not-used-in-production
+      CLIENT_ORIGIN: http://localhost:5173
+      VITE_API_URL: http://localhost:5000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Run unit tests
+        run: npm test
+        working-directory: client
+
+      - name: Start application
+        run: |
+          npm start > backend.log 2>&1 &
+          npm run dev --prefix client -- --host 0.0.0.0 > frontend.log 2>&1 &
+          npx --yes wait-on --timeout 120000 http-get://localhost:5000/api/test http-get://localhost:5173
+
+      - name: Install Cypress binary
+        run: npx cypress install
+        working-directory: client
+
+      - name: Run Cypress E2E tests
+        run: npm run test:e2e -- --browser chrome
+        working-directory: client
+
+      - name: Build production frontend
+        run: npm run build
+        working-directory: client
+
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-evidence
+          path: |
+            client/cypress/screenshots
+            client/cypress/videos
+            backend.log
+            frontend.log
+
+  deploy:
+    name: Deploy to Production
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      - name: Pull Vercel production settings
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build Vercel production deployment
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy frontend to Vercel
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      - name: Trigger Render backend deployment
+        run: curl --fail --silent --show-error "$RENDER_DEPLOY_HOOK"
