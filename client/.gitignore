@@ -29,3 +29,7 @@ dist-ssr
 
 # Backend dependencies
 server/node_modules/
+# Cypress generated evidence
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/

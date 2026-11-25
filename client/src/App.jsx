@@ -1,22 +1,26 @@
+
 import "./App.css";
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
-import AdminDashboard from "./pages/AdminDashboard";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Projects from "./pages/Projects";
-import Education from "./pages/Education";
-import Services from "./pages/Services";
-import Contact from "./pages/Contact";
-import AdminQualifications from "./pages/AdminQualifications";
-import AdminContacts from "./pages/AdminContacts";
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import AdminProjects from "./pages/AdminProjects";
+// Load additional pages only when required
+const About = lazy(() => import("./pages/About"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Education = lazy(() => import("./pages/Education"));
+const Services = lazy(() => import("./pages/Services"));
+const Contact = lazy(() => import("./pages/Contact"));
+
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminProjects = lazy(() => import("./pages/AdminProjects"));
+const AdminQualifications = lazy(() => import("./pages/AdminQualifications"));
+const AdminContacts = lazy(() => import("./pages/AdminContacts"));
+
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
 
 function App() {
   return (
@@ -26,25 +30,27 @@ function App() {
 
       {/* Main page content */}
       <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/projects" element={<AdminProjects />} />
-          <Route
-            path="/admin/qualifications"
-            element={<AdminQualifications />}
-          />
-          <Route path="/admin/contacts" element={<AdminContacts />} />
+        <Suspense fallback={<p role="status">Loading page...</p>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/education" element={<Education />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/projects" element={<AdminProjects />} />
+            <Route
+              path="/admin/qualifications"
+              element={<AdminQualifications />}
+            />
+            <Route path="/admin/contacts" element={<AdminContacts />} />
 
-          {/* Authentication pages */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
+            {/* Authentication pages */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Footer displayed on every page */}
